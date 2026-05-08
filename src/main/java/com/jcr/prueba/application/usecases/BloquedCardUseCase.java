@@ -4,6 +4,7 @@ import com.jcr.prueba.domain.enums.Status;
 import com.jcr.prueba.domain.models.Card;
 import com.jcr.prueba.domain.port.CardAdapterPort;
 import com.jcr.prueba.infraestruture.helper.excepcion.BusinessExcepction;
+import com.jcr.prueba.infraestruture.web.request.CardBlockRequest;
 import com.jcr.prueba.infraestruture.web.response.CardActiveResponse;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,16 @@ public class BloquedCardUseCase {
         this.cardAdapterPort = cardAdapterPort;
     }
 
-    public CardActiveResponse execute(Long cardId) {
+    public CardActiveResponse execute(Long cardId, CardBlockRequest cardBlockRequest) {
 
         Card card = cardAdapterPort.findByCardId(cardId);
 
-        if(card.getStatus() == Status.ISSUED) {
+        if(card.getStatus() == Status.ACTIVE) {
             card.setStatus(Status.BLOQUED);
             card.setBlockedAt(LocalDate.now());
+            card.setBloqueReason(cardBlockRequest.reason());
 
-
-            Card cardActive = cardAdapterPort.activeCard(card);
+            Card cardActive = cardAdapterPort.blockedCard(card);
 
             return  CardActiveResponse.builder()
                     .cardId(cardActive.getCardId())

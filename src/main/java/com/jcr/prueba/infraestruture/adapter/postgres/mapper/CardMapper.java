@@ -48,7 +48,7 @@ public class CardMapper {
                 .holderName(card.getHolderName())
                 .cardNumber(card.getCardNumber())
                 .expiresAt(LocalDate.now().plusYears(3))
-                .status(Status.ISSUED)
+                .status(card.getStatus())
                 .balance(0.0)
                 .currency(Currency.USD)
                 .build();

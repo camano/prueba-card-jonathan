@@ -5,6 +5,7 @@ import com.jcr.prueba.application.usecases.FindCardIdUseCase;
 import com.jcr.prueba.application.usecases.GenerateCardUseCase;
 import com.jcr.prueba.application.usecases.activeCardUseCase;
 import com.jcr.prueba.domain.models.Card;
+import com.jcr.prueba.infraestruture.web.request.CardBlockRequest;
 import com.jcr.prueba.infraestruture.web.response.CardActiveResponse;
 import com.jcr.prueba.infraestruture.web.response.CardResponse;
 import com.jcr.prueba.infraestruture.web.request.CardRequest;
@@ -45,8 +46,8 @@ public class CardController {
     }
 
     @PostMapping("/{cardId}/block")
-    public ResponseEntity<CardActiveResponse> blockCard(@PathVariable("cardId") Long cardId) {
-        return new ResponseEntity<>(bloquedCardUseCase.execute(cardId),HttpStatus.OK);
+    public ResponseEntity<CardActiveResponse> blockCard(@RequestBody CardBlockRequest cardBlockRequest, @PathVariable("cardId") Long cardId) {
+        return new ResponseEntity<>(bloquedCardUseCase.execute(cardId,cardBlockRequest),HttpStatus.OK);
 
     }
 
