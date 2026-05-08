@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: prueba
+
+  datasource:
+    url : jdbc:postgresql://localhost:5432/prueba_card
+    username: postgres
+    password: root
+  jpa:
+    database : POSTGRESQL
+    show-sql : true
+    hibernate :
+      ddl-auto : update
