@@ -8,8 +8,9 @@ import com.jcr.prueba.infraestruture.adapter.postgres.mapper.CardMapper;
 import com.jcr.prueba.infraestruture.adapter.postgres.repository.CardRepository;
 import com.jcr.prueba.infraestruture.web.request.CardRequest;
 import com.jcr.prueba.infraestruture.web.response.CardActiveResponse;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class CardRepositoryAdapter implements CardAdapterPort {
 
     private final CardRepository cardRepository;

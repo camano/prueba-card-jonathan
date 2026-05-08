@@ -1,6 +1,6 @@
 Script para crear la base de datos 
 
-create database prueba_card;
+create database card_prueba;
 
 
 curl 
