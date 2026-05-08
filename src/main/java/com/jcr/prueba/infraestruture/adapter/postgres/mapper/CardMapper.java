@@ -54,6 +54,21 @@ public class CardMapper {
                 .build();
     }
 
+    public CardEntity toEntityCardEntityBlock(Card card) {
+
+        return CardEntity.builder()
+                .cardId(card.getCardId())
+                .holderName(card.getHolderName())
+                .cardNumber(card.getCardNumber())
+                .expiresAt(card.getExpiresAt())
+                .status(card.getStatus())
+                .balance(0.0)
+                .currency(Currency.USD)
+                .blockedAt(LocalDate.now())
+                .blockedReason(card.getBloqueReason())
+                .build();
+    }
+
     public Card toDomainCards(CardEntity cardEntity){
         return Card.builder()
                 .cardId(cardEntity.getCardId())

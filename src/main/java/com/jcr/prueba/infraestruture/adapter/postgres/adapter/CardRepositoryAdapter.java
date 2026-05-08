@@ -34,7 +34,7 @@ public class CardRepositoryAdapter implements CardAdapterPort {
 
     @Override
     public Card blockedCard(Card card) {
-        return cardMapper.toDomainCards(cardRepository.save(cardMapper.toEntityCardEntityActive(card)));
+        return cardMapper.toDomainCards(cardRepository.save(cardMapper.toEntityCardEntityBlock(card)));
     }
 
 
