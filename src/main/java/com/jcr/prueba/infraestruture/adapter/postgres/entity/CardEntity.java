@@ -21,9 +21,9 @@ public class CardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
+    @Column(unique = true,length = 16)
     private String cardNumber;
     private  String holderName;
-    private String cardHolderName;
     private LocalDate issuedAt;
     private LocalDate expiresAt;
     private Status status;

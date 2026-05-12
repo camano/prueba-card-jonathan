@@ -6,7 +6,7 @@ import com.jcr.prueba.infraestruture.web.request.CardRequest;
 
 public interface CardAdapterPort {
 
-    CardResponse generateCard(CardRequest cardRequest);
+    Card generateCard(CardRequest cardRequest);
 
     Card activeCard(Card card);
 

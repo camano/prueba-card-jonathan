@@ -3,58 +3,33 @@ package com.jcr.prueba.infraestruture.adapter.postgres.mapper;
 import com.jcr.prueba.domain.enums.Currency;
 import com.jcr.prueba.domain.enums.Status;
 import com.jcr.prueba.domain.models.Card;
-import com.jcr.prueba.infraestruture.web.response.CardResponse;
 import com.jcr.prueba.infraestruture.adapter.postgres.entity.CardEntity;
 import com.jcr.prueba.infraestruture.web.request.CardRequest;
-import com.jcr.prueba.infraestruture.web.response.CardActiveResponse;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 @Component
-public class CardMapper {
+public class CardMapperEntity {
 
 
-    public CardResponse toDomainCard(CardEntity cardEntity) {
-        return CardResponse.builder()
-                .cardId(cardEntity.getCardId())
-                .cardNumber(cardEntity.getCardNumber())
-                .status(cardEntity.getStatus())
-                .expirationDate(cardEntity.getExpiresAt())
-                .balance(cardEntity.getBalance())
-                .currency(cardEntity.getCurrency())
-                .build();
-
-    }
 
     public CardEntity toEntityCardEntityCreated(CardRequest card) {
 
         return CardEntity.builder()
                 .holderName(card.holderName())
-                .cardNumber(card.productId())
+                .cardNumber(generateCardNumber(card.productId()))
                 .expiresAt(LocalDate.now().plusYears(3))
+                .issuedAt(LocalDate.now())
                 .status(Status.ISSUED)
                 .balance(0.0)
                 .currency(Currency.USD)
-
                 .build();
     }
 
 
-    public CardEntity toEntityCardEntityActive(Card card) {
-
-        return CardEntity.builder()
-                .cardId(card.getCardId())
-                .holderName(card.getHolderName())
-                .cardNumber(card.getCardNumber())
-                .expiresAt(LocalDate.now().plusYears(3))
-                .status(card.getStatus())
-                .balance(0.0)
-                .currency(Currency.USD)
-                .build();
-    }
-
-    public CardEntity toEntityCardEntityBlock(Card card) {
+    public CardEntity toEntityCardEntity(Card card) {
 
         return CardEntity.builder()
                 .cardId(card.getCardId())
@@ -63,11 +38,12 @@ public class CardMapper {
                 .expiresAt(card.getExpiresAt())
                 .status(card.getStatus())
                 .balance(0.0)
-                .currency(Currency.USD)
-                .blockedAt(LocalDate.now())
+                .currency(card.getCurrency())
+                .blockedAt(card.getBlockedAt())
                 .blockedReason(card.getBloqueReason())
                 .build();
     }
+
 
     public Card toDomainCards(CardEntity cardEntity){
         return Card.builder()
@@ -81,5 +57,11 @@ public class CardMapper {
                 .balance(cardEntity.getBalance())
                 .currency(cardEntity.getCurrency())
                 .build();
+    }
+
+    private String generateCardNumber(String cardId) {
+        String random=String.format("%10d", new Random().nextLong(1_000_000_0000L));
+        return random + cardId;
+
     }
 }

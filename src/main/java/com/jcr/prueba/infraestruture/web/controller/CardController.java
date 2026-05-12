@@ -5,10 +5,12 @@ import com.jcr.prueba.application.usecases.FindCardIdUseCase;
 import com.jcr.prueba.application.usecases.GenerateCardUseCase;
 import com.jcr.prueba.application.usecases.activeCardUseCase;
 import com.jcr.prueba.domain.models.Card;
+import com.jcr.prueba.infraestruture.web.mapper.CardMapper;
 import com.jcr.prueba.infraestruture.web.request.CardBlockRequest;
 import com.jcr.prueba.infraestruture.web.response.CardActiveResponse;
 import com.jcr.prueba.infraestruture.web.response.CardResponse;
 import com.jcr.prueba.infraestruture.web.request.CardRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/cards")
 public class CardController {
 
+    private final CardMapper  cardMapper;
     private final GenerateCardUseCase generateCardUseCase;
     private final FindCardIdUseCase cardIdUseCase;
     private final activeCardUseCase activeCardUseCase;
     private  final BloquedCardUseCase bloquedCardUseCase;
-    public CardController(GenerateCardUseCase generateCardUseCase, FindCardIdUseCase cardIdUseCase, activeCardUseCase activeCardUseCase, BloquedCardUseCase bloquedCardUseCase) {
+    public CardController(CardMapper cardMapper, GenerateCardUseCase generateCardUseCase, FindCardIdUseCase cardIdUseCase, activeCardUseCase activeCardUseCase, BloquedCardUseCase bloquedCardUseCase) {
+        this.cardMapper = cardMapper;
         this.generateCardUseCase = generateCardUseCase;
         this.cardIdUseCase = cardIdUseCase;
         this.activeCardUseCase = activeCardUseCase;
@@ -29,8 +33,10 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity<CardResponse> generateCard(@RequestBody CardRequest cardRequest) {
-        return new ResponseEntity<>(generateCardUseCase.generateCard(cardRequest), HttpStatus.CREATED);
+    public ResponseEntity<CardResponse> generateCard(@Valid  @RequestBody CardRequest cardRequest) {
+        Card card = generateCardUseCase.generateCard(cardRequest);
+
+        return new ResponseEntity<>(cardMapper.toResponse(card), HttpStatus.CREATED);
 
     }
 

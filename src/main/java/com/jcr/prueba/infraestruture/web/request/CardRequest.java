@@ -1,4 +1,11 @@
 package com.jcr.prueba.infraestruture.web.request;
 
-    public record CardRequest(String productId, String holderName) {
+import jakarta.validation.constraints.Pattern;
+
+public record CardRequest(
+            @Pattern(
+                    regexp = "\\d{6}",
+                    message = "El productId debe tener exactamente 6 dígitos"
+            )
+            String productId, String holderName) {
 }
